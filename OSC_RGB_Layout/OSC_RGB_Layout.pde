@@ -10,7 +10,10 @@ import netP5.*;
 import processing.serial.*;
 
 OscP5 oscP5;
-String output;
+
+float redValue;
+float greenValue;
+float blueValue;
 
 void setup() {
   size(320, 480);
@@ -19,12 +22,26 @@ void setup() {
 
 
 void oscEvent(OscMessage theOscMessage) {
- String addr = theOscMessage.addrPattern();
- output = addr;
+ 
+  String addr = theOscMessage.addrPattern();
+  OscArgument arg = theOscMessage.get(0);
+ 
+  if(addr.equals("/1/fader1")) {
+     redValue = arg.floatValue();
+  } 
+ 
+  if(addr.equals("/1/fader2")) {
+     greenValue = arg.floatValue();
+  }
+ 
+  if(addr.equals("/1/fader3")) {
+     blueValue = arg.floatValue();
+  } 
  
 }
 
 void draw() {
-  println(output);
+ fill(redValue, greenValue, blueValue);
+ ellipse(200,200,200,200);
 }
 
